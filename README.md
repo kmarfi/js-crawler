@@ -1,6 +1,12 @@
 js-crawler
 ==========
 
+Update: 19/01/28
+
+Added HTTP Basic auth through requests HTTP Auth.
+
+##
+
 Web crawler for Node.JS, both HTTP and HTTPS are supported.
 
 ## Installation
