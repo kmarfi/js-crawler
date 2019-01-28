@@ -6,6 +6,7 @@ var DEFAULT_DEPTH = 2;
 var DEFAULT_MAX_CONCURRENT_REQUESTS = 10;
 var DEFAULT_MAX_REQUESTS_PER_SECOND = 100;
 var DEFAULT_USERAGENT = 'crawler/js-crawler';
+var DEFAULT_AUTH = {};
 
 /*
  * Executor that handles throttling and task processing rate.
@@ -83,6 +84,7 @@ function Crawler() {
   this.userAgent = DEFAULT_USERAGENT;
   this.maxConcurrentRequests = DEFAULT_MAX_CONCURRENT_REQUESTS;
   this.maxRequestsPerSecond = DEFAULT_MAX_REQUESTS_PER_SECOND;
+  this.auth = DEFAULT_AUTH;
   this.shouldCrawl = function(url) {
     return true;
   };
@@ -106,6 +108,7 @@ Crawler.prototype.configure = function(options) {
   this.maxRequestsPerSecond = (options && options.maxRequestsPerSecond) || this.maxRequestsPerSecond;
   this.shouldCrawl = (options && options.shouldCrawl) || this.shouldCrawl;
   this.shouldCrawlLinksFrom = (options && options.shouldCrawlLinksFrom) || this.shouldCrawlLinksFrom;
+  this.auth = (options && options.auth) || this.auth;
   this.onSuccess = _.noop;
   this.onFailure = _.noop;
   this.onAllFinished = _.noop;
@@ -211,6 +214,7 @@ Crawler.prototype._crawlUrl = function(url, referer, depth) {
     encoding: null, // Added by @tibetty so as to avoid request treating body as a string by default
     rejectUnauthorized : false,
     followRedirect: true,
+    auth: self.auth,
     followAllRedirects: true,
     headers: {
       'User-Agent': this.userAgent,
